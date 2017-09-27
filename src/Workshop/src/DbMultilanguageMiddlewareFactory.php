@@ -16,8 +16,8 @@ class DbMultilanguageMiddlewareFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-       $service = $container->get(MultilanguageServiceInterface::class);
+        $service = $container->get(MultilanguageServiceInterface::class);
 
-       return new DbMultilanguageMiddleware($service);
+        return new DbMultilanguageMiddleware($service);
     }
 }

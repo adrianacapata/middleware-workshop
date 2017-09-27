@@ -15,7 +15,7 @@ class SimpleMultiLanguageMiddleware
 {
     public function __invoke(ServerRequestInterface $req, ResponseInterface $res, callable $next = null)
     {
-     $storage = [
+        $storage = [
                  'en' => [
                      'title1' => 'hello',
                      'title2' => 'goodbye'
@@ -27,9 +27,9 @@ class SimpleMultiLanguageMiddleware
                  ]
              ];
 
-     $langCode =$req->getQueryParams()['lang'] ?? 'en';
+        $langCode =$req->getQueryParams()['lang'] ?? 'en';
 
-     $req = $req->withAttribute('multilanguage', $storage[$langCode] ?? $storage['en']);
-     return $next($req, $res);
+        $req = $req->withAttribute('multilanguage', $storage[$langCode] ?? $storage['en']);
+        return $next($req, $res);
     }
 }

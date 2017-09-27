@@ -34,7 +34,6 @@ class DbMultilanguageMiddleware implements MiddlewareInterface
     public function __construct(MultilanguageServiceInterface $multilanguageService)
     {
         $this->multilanguageService = $multilanguageService;
-
     }
 
     /**

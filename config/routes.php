@@ -36,7 +36,7 @@ use Frontend\User\Controller\UserController as FrontendUserController;
 
 /** @var \Zend\Expressive\Application $app */
 
-$app->route('/', [PageController::class], ['GET', 'POST'], 'home');
+$app->route('/', [\Workshop\Middleware\DbMultilanguageMiddleware::class, PageController::class], ['GET', 'POST'], 'home');
 
 // following three routes are for user functionality
 $app->route('/user/login', LoginAction::class, ['GET', 'POST'], 'login');
@@ -45,3 +45,7 @@ $app->route('/user[/{action}]', [FrontendUserController::class, UserController::
 
 $app->route('/contact[/{action}]', [ContactController::class], ['GET', 'POST'], 'contact');
 $app->route('/page[/{action}]', [PageController::class], ['GET', 'POST'], 'page');
+
+$app->route('/test', [\Workshop\Middleware\SimpleMultiLanguageMiddleware::class, \Workshop\Middleware\TestMiddleware::class], ['GET'], 'test');
+$app->route('/lang', [\Workshop\Middleware\SimpleMultiLanguageMiddleware::class], ['GET'], 'lang');
+$app->route('/dbml', [\Workshop\Middleware\DbMultilanguageMiddleware::class], ['GET'], 'dbml');

@@ -73,7 +73,8 @@
     "psr-4": {
       "Frontend\\App\\": "src/App/src",
       "Frontend\\User\\": "src/User/src",
-      "Frontend\\Console\\": "src/Console/src"
+      "Frontend\\Console\\": "src/Console/src",
+      "Workshop\\Middleware\\": "src/Workshop/src"
     }
   },
   "autoload-dev": {

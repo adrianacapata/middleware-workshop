@@ -50,7 +50,7 @@ class PageController extends AbstractActionController
 
         $multilanguage = $this->getRequest()->getAttribute('multilanguage', []);
 
-        $data['language'] = $multilanguage;
+        $data['multilanguage'] = $multilanguage;
 
 
         return new HtmlResponse($this->template('app::home', $data));

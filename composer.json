@@ -74,7 +74,8 @@
       "Frontend\\App\\": "src/App/src",
       "Frontend\\User\\": "src/User/src",
       "Frontend\\Console\\": "src/Console/src",
-      "Workshop\\Middleware\\": "src/Workshop/src"
+      "Workshop\\Middleware\\": "src/Workshop/src",
+      "Apidemia\\Blog\\": "src/Blog/src"
     }
   },
   "autoload-dev": {

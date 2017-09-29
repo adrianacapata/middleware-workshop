@@ -18,28 +18,19 @@ class MultilanguageService implements MultilanguageServiceInterface, MapperManag
 
     public function getTranslation($language)
     {
-       /* $storage = [
-            'en' => [
-                'title1' => 'hello',
-                'title2' => 'goodbye'
-            ],
-
-            'ro' => [
-                'title1' => 'salut',
-                'title2' => 'la revedere'
-            ]
-        ]; */
 
         $options = [
             'fields' => '*',
             'conditions' => [
-                'languageCode' => 'en'
+                'languageCode' => $language
             ],
         ];
+
         $mapper = $this->getMapperManager()->get(MultilanguageEntity::class);
         $result = $mapper->find('all', $options);
+        $newResult = [];
         foreach ($result as $value) {
-            $newResult[$value->getTag()] = $value->getValue();
+             $newResult[$value->getTag()] = $value->getValue();
         }
         return $newResult;
 //        return $storage[$language] ?? $storage['en'];

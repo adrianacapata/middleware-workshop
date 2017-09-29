@@ -58,6 +58,7 @@ $aggregator = new ConfigAggregator([
     \Frontend\App\ConfigProvider::class,
     \Frontend\Console\ConfigProvider::class,
     \Workshop\Middleware\ConfigProvider::class,
+    \Apidemia\Blog\ConfigProvider::class,
 
     // Load application config in a pre-defined order in such a way that local settings
     // overwrite global settings. (Loaded as first to last):

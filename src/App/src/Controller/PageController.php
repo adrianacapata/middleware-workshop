@@ -48,9 +48,9 @@ class PageController extends AbstractActionController
         $data['templateName'] = 'Twig';
         $data['templateDocs'] = 'http://twig.sensiolabs.org/documentation';
 
-        $multilanguage = $this->getRequest()->getAttribute('multilanguage', []);
+        $multilanguage = $this->getRequest()->getAttribute('multilanguage');
 
-        $data['multilanguage'] = $multilanguage;
+        $data['multilanguage']['title'] = $multilanguage['title'] ?? 'N\A';
 
 
         return new HtmlResponse($this->template('app::home', $data));

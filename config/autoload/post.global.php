@@ -5,7 +5,6 @@ use Apidemia\Blog\Service\PostService;
 use Apidemia\Blog\Factory\PostFactory;
 use Apidemia\Blog\Controller\PostFrontendController;
 
-
 return [
     'dependencies' => [
         'invokables' => [

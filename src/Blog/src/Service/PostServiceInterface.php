@@ -16,7 +16,7 @@ interface PostServiceInterface
 
     public function createPost(PostEntity $post);
 
-    public function updatePost(PostEntity $slug);
+    public function updatePost($slug, PostEntity $post);
 
-    public function deletePost(PostEntity $slug);
+    public function deletePost($slug);
 }

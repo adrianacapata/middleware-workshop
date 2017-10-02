@@ -20,7 +20,9 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dot_mapper' => $this->getMappers()
+            'dot_mapper' => $this->getMappers(),
+
+            'templates' => $this->getTemplates(),
         ];
     }
 
@@ -35,6 +37,15 @@ class ConfigProvider
                     PostEntity::class => PostMapper::class
                 ]
             ]
+        ];
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'paths' => [
+                'blog' => [__DIR__ . '/../templates/blog'],
+            ],
         ];
     }
 }

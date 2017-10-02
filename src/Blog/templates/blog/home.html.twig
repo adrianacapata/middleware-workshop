@@ -1,0 +1,30 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1> Post List</h1>
+
+    <div class="container">
+        <table class="table" align="center">
+            <thead>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Author</th>
+                <th>Published On</th>
+            </thead>
+            <tbody>
+                    {%  for item in post %}
+                <tr>
+                    <td> {{ item.title }}</td>
+                    <td> {{ item.content }}</td>
+                    <td> {{ item.userId }}</td>
+                    <td> {{ item.publishDate }}</td>
+                </tr>
+                    {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

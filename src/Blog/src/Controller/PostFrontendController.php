@@ -21,10 +21,7 @@ class PostFrontendController extends AbstractActionController
     public function indexAction()
     {
         $data['post'] = $this->postService->getPosts();
-
         return new HtmlResponse($this->template('blog::home', $data));
-//        var_dump($data);
-//        exit;
     }
 
     public function viewAction()
@@ -33,11 +30,9 @@ class PostFrontendController extends AbstractActionController
         $slug = $this->getRequest()->getAttributes();
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
-        $data = $this->postService->getPosts();
+        $data['post'] = $this->postService->getPosts($data['slug']);
 
         return new HtmlResponse($this->template('blog::home', $data));
-//        var_dump($data);
-//        exit;
     }
 
     public function createAction(): ResponseInterface

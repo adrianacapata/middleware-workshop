@@ -1,0 +1,44 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Edit{% endblock %}
+{% block content %}
+    <style>
+        .action {
+            width: 200px;
+        }
+        .actionElement {
+            width: 10%;
+        }
+    </style>
+    <h1> Edit post {{ post.title }}</h1>
+
+    <div class="container">
+        <table class="table" align="center">
+            <thead>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Author</th>
+            <th>Published On</th>
+            <th class = "action" >Action</th>
+            </thead>
+            <tbody>
+            <form method="post">
+                <tr>
+                    <td> <input type="text" name="title" value="{{ post.title }}">  </td>
+                    <td> <input type="text" name="content" value="{{ post.content }}"> </td>
+                    <td> {{ post.userId }}</td>
+                    <td> {{ post.publishDate }}</td>
+                    <td class="actionElement"><a href="/blog/delete/{{ post.slug }}"> Delete </a> </td>
+                    <td> <input type="submit" value="submit"> </td>
+            </form>
+                    </td>
+
+
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

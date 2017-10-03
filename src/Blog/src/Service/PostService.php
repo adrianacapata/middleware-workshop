@@ -31,9 +31,27 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
             ];
         }
 
-
         $mapper = $this->getMapperManager()->get(PostEntity::class);
         $result = $mapper->find('all', $options);
+        return $result;
+    }
+
+    public function getPost($slug = '')
+    {
+//        $options = [
+//            'fields' => '*'
+//        ];
+//
+//        if ($slug) {
+//            $options = [
+//                'conditions' => [
+//                    'slug' => $slug
+//                ]
+//            ];
+//        }
+
+        $mapper = $this->getMapperManager()->get(PostEntity::class);
+        $result = $mapper->get($slug);
         return $result;
     }
 
@@ -54,6 +72,7 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
 
         $mapper = $this->getMapperManager()->get(PostEntity::class);
         $result = $mapper->save($post);
+        $result = $mapper->get($slug);
         return $result;
     }
 

@@ -30,7 +30,6 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
                 ]
             ];
         }
-
         $mapper = $this->getMapperManager()->get(PostEntity::class);
         $result = $mapper->find('all', $options);
         return $result;
@@ -71,7 +70,6 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
         ];
 
         $mapper = $this->getMapperManager()->get(PostEntity::class);
-        $result = $mapper->save($post);
         $result = $mapper->get($slug);
         return $result;
     }

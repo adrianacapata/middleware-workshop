@@ -21,6 +21,7 @@ class PostFrontendController extends AbstractActionController
     public function indexAction()
     {
         $data['post'] = $this->postService->getPosts();
+
         return new HtmlResponse($this->template('blog::home', $data));
     }
 
@@ -82,7 +83,7 @@ class PostFrontendController extends AbstractActionController
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
         $storage = new PostEntity();
-        $storage->setId(3);
+//        $storage->setId(3);
         $storage->setTitle('title3');
         $storage->setSlug($data['slug']);
         $storage->setContent('content3');
@@ -90,6 +91,6 @@ class PostFrontendController extends AbstractActionController
 //        $storage->setPublishDate(28);
 
         $data = $this->postService->deletePost($data['slug']);
-        exit('deletePage');
+        exit('postDeleted');
     }
 }

@@ -23,7 +23,8 @@
             </thead>
             <tbody>
                     {%  for item in post %}
-                <tr>
+                        {#{{ dump(post) }}#}
+                        <tr>
                     <td><a href="/blog/view/{{ item.slug }}"> {{ item.title }} </a> </td>
                     <td> {{ item.content }}</td>
                     <td> {{ item.userId }}</td>
@@ -34,13 +35,12 @@
                             <td class="actionElement"><a href="/blog/delete/{{ item.slug }}"> Delete </a> </td>
                         </table>
                     </td>
-
-
                 </tr>
                     {% endfor %}
 
             </tbody>
         </table>
+        <a href="/blog/create">Create</a>
     </div>
 
 {% endblock %}

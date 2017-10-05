@@ -9,6 +9,7 @@ use Dot\Controller\AbstractActionController;
 use Dot\Hydrator\ClassMethodsCamelCase;
 use Zend\Stdlib\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 
 class PostFrontendController extends AbstractActionController
 {
@@ -21,6 +22,7 @@ class PostFrontendController extends AbstractActionController
     public function indexAction()
     {
         $data['post'] = $this->postService->getPosts();
+//        var_dump($data);
 
         return new HtmlResponse($this->template('blog::home', $data));
     }
@@ -38,15 +40,25 @@ class PostFrontendController extends AbstractActionController
 
     public function createAction()
     {
-        $storage = new PostEntity();
-        $storage->setTitle('title8908');
-        $storage->setSlug('slug47');
-        $storage->setContent('content4df');
-        $storage->setUserId(1);
+        $url = 'http://' .$_SERVER['HTTP_HOST'] . '/blog';
+//        var_dump($url); exit;
+        $data = [];
 
-        $data = $this->postService->createPost($storage);
+        $create = $this->getRequest()->getParsedBody();
 
-        exit('createPage');
+        if (!empty($create)) {
+            $storage = new PostEntity();
+//            $storage->setId(4);
+            $storage->setTitle($create['title']);
+            $storage->setContent($create['content']);
+            $storage->setSlug($create['slug']);
+            $storage->setUserId(1);
+//            var_dump($storage); exit;
+            $data['post'] = $this->postService->createPost($storage);
+
+            return new RedirectResponse($url);
+        }
+        return new HtmlResponse($this->template('blog::create', $data));
     }
 
     public function editAction()
@@ -54,26 +66,20 @@ class PostFrontendController extends AbstractActionController
         $slug = $this->getRequest()->getAttributes();
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
-        $data['post'] = $this->postService->getPost($data['slug']);
-//        echo '<pre>';
-//        var_dump($data['post']);
-//        echo '<br>';
+        $data['post'] = $this->postService->getPosts($data['slug'])[0];
 
         $edit = $this->getRequest()->getParsedBody();
+
         if (!empty($edit)) {
-//            var_dump(current($data)); exit;
             $storage = new PostEntity();
             $storage->setTitle($edit['title']);
-            $storage->setUserId(1);
+            $storage->setUserId($data['post']->getUserId());
             $storage->setContent($edit['content']);
             $storage->setSlug($data['slug']);
             $storage->setId($data['post']->getId());
-//            $storage->setId(11);
-//            echo '<pre>';
-//            var_dump($storage); exit;
+
             $data['post'] = $this->postService->updatePost($data['slug'], $storage);
         }
-//        var_dump($data);exit;
         return new HtmlResponse($this->template('blog::edit', $data));
     }
 

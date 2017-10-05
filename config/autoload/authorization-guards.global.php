@@ -41,7 +41,7 @@ return [
                                     'route' => 'page',
                                     'actions' => ['premium-content'],
                                     'permissions' => ['premium-content']
-                                ]
+                                ],
                             ]
                         ]
                     ]

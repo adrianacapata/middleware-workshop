@@ -6,10 +6,10 @@ use Apidemia\Blog\Entity\PostEntity;
 use Apidemia\Blog\Service\PostService;
 use Apidemia\Blog\Service\PostServiceInterface;
 use Dot\Controller\AbstractActionController;
-use Dot\Hydrator\ClassMethodsCamelCase;
-use Zend\Stdlib\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Stratigility\MiddlewareInterface;
 
 class PostFrontendController extends AbstractActionController
 {
@@ -19,15 +19,14 @@ class PostFrontendController extends AbstractActionController
         $this->postService = $postService;
     }
 
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
         $data['post'] = $this->postService->getPosts();
 //        var_dump($data);
-
         return new HtmlResponse($this->template('blog::home', $data));
     }
 
-    public function viewAction()
+    public function viewAction(): ResponseInterface
     {
         $data = [];
         $slug = $this->getRequest()->getAttributes();
@@ -35,41 +34,49 @@ class PostFrontendController extends AbstractActionController
 
         $data['post'] = $this->postService->getPosts($data['slug']);
 
-        return new HtmlResponse($this->template('blog::home', $data));
+        return new HtmlResponse($this->template('blog::view', $data));
     }
 
-    public function createAction()
+    public function createAction(): ResponseInterface
     {
+//        $test = $this->getRequest()->getUri()->getPath();//////
+//        var_dump($this->url('blog', ['action' => 'index'])); exit;
+        //set path to re redirect
         $url = 'http://' .$_SERVER['HTTP_HOST'] . '/blog';
-//        var_dump($url); exit;
         $data = [];
+        //get data from Post
+        $createPost = $this->getRequest()->getParsedBody();
+        //get data from db
+        $dbPost = $this->postService->getPosts();
 
-        $create = $this->getRequest()->getParsedBody();
-
-        if (!empty($create)) {
+        if (!empty($createPost)) {
+//            var_dump($dbPost); exit;
             $storage = new PostEntity();
-//            $storage->setId(4);
-            $storage->setTitle($create['title']);
-            $storage->setContent($create['content']);
-            $storage->setSlug($create['slug']);
+            $storage->setTitle($createPost['title']);
+            $storage->setContent($createPost['content']);
             $storage->setUserId(1);
-//            var_dump($storage); exit;
-            $data['post'] = $this->postService->createPost($storage);
 
+            foreach ($dbPost as $value) {
+                if ($createPost['slug'] === $value->getSlug()) {
+//                    exit ('slug already exists');
+                    return new RedirectResponse($this->url('blog', ['action' => '']));
+                }
+                $storage->setSlug($createPost['slug']);
+            }
+            $data['post'] = $this->postService->createPost($storage);
             return new RedirectResponse($url);
         }
         return new HtmlResponse($this->template('blog::create', $data));
     }
 
-    public function editAction()
+    public function editAction(): ResponseInterface
     {
         $slug = $this->getRequest()->getAttributes();
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
         $data['post'] = $this->postService->getPosts($data['slug'])[0];
 
-        $edit = $this->getRequest()->getParsedBody();
-
+        $editPost = $this->getRequest()->getParsedBody();
         if (!empty($edit)) {
             $storage = new PostEntity();
             $storage->setTitle($edit['title']);
@@ -83,20 +90,15 @@ class PostFrontendController extends AbstractActionController
         return new HtmlResponse($this->template('blog::edit', $data));
     }
 
-    public function deleteAction()
+    public function deleteAction(): ResponseInterface
     {
         $slug = $this->getRequest()->getAttributes();
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
-        $storage = new PostEntity();
-//        $storage->setId(3);
-        $storage->setTitle('title3');
-        $storage->setSlug($data['slug']);
-        $storage->setContent('content3');
-        $storage->setUserId(1);
-//        $storage->setPublishDate(28);
-
         $data = $this->postService->deletePost($data['slug']);
-        exit('postDeleted');
+        if ($data) {
+            exit('Succes -> post Deleted');
+        }
+        exit('Post was not deleted');
     }
 }

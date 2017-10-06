@@ -1,0 +1,32 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+    <style>
+        .action {
+            width: 200px;
+        }
+        .actionElement {
+            width: 10%;
+        }
+    </style>
+    <div class="container">
+        <table class="table">
+            <thead>
+                {%  for item in post %}
+                <th>Title: {{ item.title }} </th>
+                <th>
+                    <table align="right">
+                        <td class="actionElement"><a href="/blog/edit/{{ item.slug }}">Edit</a></td>
+                        <td class="actionElement"><a href="/blog/delete/{{ item.slug }}"> Delete </a> </td>
+                    </table>
+                </th>
+            </thead>
+            <tbody>
+                <td>Content: {{ item.content }}</td>
+                <td>Published On: {{ item.publishDate }}</td>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

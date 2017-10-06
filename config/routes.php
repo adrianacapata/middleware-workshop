@@ -39,7 +39,7 @@ use Apidemia\Blog\Controller\PostFrontendController;
 
 $app->route('/', [\Workshop\Middleware\DbMultilanguageMiddleware::class, PageController::class], ['GET', 'POST'], 'home');
 //Format: /blog/{action}[/{slug}]
-$app->route('/blog[/{action}[/{slug}]]', PostFrontendController::class, ['GET', 'POST'], 'home');
+$app->route('/blog[/[{action}[/{slug}]]]', PostFrontendController::class, ['GET', 'POST'], 'blog');
 // following three routes are for user functionality
 $app->route('/user/login', LoginAction::class, ['GET', 'POST'], 'login');
 $app->route('/user/logout', LogoutAction::class, ['GET'], 'logout');

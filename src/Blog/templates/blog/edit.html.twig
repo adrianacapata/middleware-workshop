@@ -24,8 +24,8 @@
             <tbody>
             <form method="post">
                 <tr>
-                    <td> <input type="text" name="title" value="{{ post.title }}">  </td>
-                    <td> <input type="text" name="content" value="{{ post.content }}"> </td>
+                    <td> <input type="text" name="title" placeholder="{{ post.title }}">  </td>
+                    <td> <input type="text" name="content" placeholder="{{ post.content }}"> </td>
                     <td> {{ post.userId }}</td>
                     <td> {{ post.publishDate }}</td>
                     <td class="actionElement"><a href="/blog/delete/{{ post.slug }}"> Delete </a> </td>

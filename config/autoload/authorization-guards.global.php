@@ -42,6 +42,11 @@ return [
                                     'actions' => ['premium-content'],
                                     'permissions' => ['premium-content']
                                 ],
+                                [
+                                    'route' => 'blog',
+                                    'actions' => ['create', 'edit', 'delete'],
+                                    'permissions' => ['authenticated']
+                                ],
                             ]
                         ]
                     ]

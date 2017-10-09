@@ -21,9 +21,11 @@ class PostFrontendController extends AbstractActionController
 
     public function indexAction(): ResponseInterface
     {
+        $form = $this->forms('viewForm');
+
         $data['post'] = $this->postService->getPosts();
 //        var_dump($data);
-        return new HtmlResponse($this->template('blog::home', $data));
+        return new HtmlResponse($this->template('blog::home', ['form' => $form]));
     }
 
     public function viewAction(): ResponseInterface
@@ -44,6 +46,7 @@ class PostFrontendController extends AbstractActionController
         //set path to re redirect
         $url = 'http://' .$_SERVER['HTTP_HOST'] . '/blog';
         $data = [];
+        $userId = $this->authentication()->getIdentity()->getId();
         //get data from Post
         $createPost = $this->getRequest()->getParsedBody();
         //get data from db
@@ -54,7 +57,7 @@ class PostFrontendController extends AbstractActionController
             $storage = new PostEntity();
             $storage->setTitle($createPost['title']);
             $storage->setContent($createPost['content']);
-            $storage->setUserId(1);
+            $storage->setUserId($userId);
 
             foreach ($dbPost as $value) {
                 if ($createPost['slug'] === $value->getSlug()) {

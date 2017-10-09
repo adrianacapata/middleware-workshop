@@ -11,9 +11,11 @@ namespace Apidemia\Blog;
 
 use Apidemia\Blog\Entity\PostEntity;
 use Apidemia\Blog\Mapper\PostMapper;
+use Apidemia\Blog\Form\ViewForm;
 use Dot\Mapper\Factory\DbMapperFactory;
 use Workshop\Middleware\Entity\MultilanguageEntity;
 use Workshop\Middleware\Mapper\MultilanguageDbMapper;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 class ConfigProvider
 {
@@ -23,6 +25,8 @@ class ConfigProvider
             'dot_mapper' => $this->getMappers(),
 
             'templates' => $this->getTemplates(),
+
+            'dot_form' => $this->getForms(),
         ];
     }
 
@@ -45,6 +49,20 @@ class ConfigProvider
         return [
             'paths' => [
                 'blog' => [__DIR__ . '/../templates/blog'],
+            ],
+        ];
+    }
+
+    public function getForms()
+    {
+        return [
+            'form_manager' => [
+                'factories' => [
+                    ViewForm::class => InvokableFactory::class,
+                ],
+                'aliases' => [
+                    'ViewForm' => ViewForm::class,
+                ]
             ],
         ];
     }

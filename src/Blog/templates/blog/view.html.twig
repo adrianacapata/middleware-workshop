@@ -11,6 +11,7 @@
         }
     </style>
     <div class="container">
+        {{ messagesPartial('partial::alerts') }}
         <table class="table">
             <thead>
                 {%  for item in post %}
@@ -28,5 +29,6 @@
             </tbody>
             {% endfor %}
         </table>
+        <a href="/blog">View posts</a>
     </div>
 {% endblock %}

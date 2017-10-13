@@ -6,11 +6,20 @@ use Apidemia\Blog\Entity\PostEntity;
 use Apidemia\Blog\Service\PostService;
 use Apidemia\Blog\Service\PostServiceInterface;
 use Dot\Controller\AbstractActionController;
+use Fig\Http\Message\RequestMethodInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Stratigility\MiddlewareInterface;
+use Dot\Controller\Plugin\Forms;
+use Apidemia\Blog\Messages;
+use Dot\Controller\Plugin\FlashMessenger\FlashMessengerPlugin;
 
+/**
+ * Class PostFrontendController
+ * @package Apidemia\Blog\Controller
+ * @method FlashMessengerPlugin messenger()
+ */
 class PostFrontendController extends AbstractActionController
 {
 
@@ -21,11 +30,10 @@ class PostFrontendController extends AbstractActionController
 
     public function indexAction(): ResponseInterface
     {
-        $form = $this->forms('viewForm');
 
         $data['post'] = $this->postService->getPosts();
 //        var_dump($data);
-        return new HtmlResponse($this->template('blog::home', ['form' => $form]));
+        return new HtmlResponse($this->template('blog::home', $data));
     }
 
     public function viewAction(): ResponseInterface
@@ -35,6 +43,11 @@ class PostFrontendController extends AbstractActionController
         $data['slug'] = $slug['slug'] ?? 'N\A';
 
         $data['post'] = $this->postService->getPosts($data['slug']);
+        if (empty($data['post'])) {
+//            var_dump($this->url('blog', ['action' => 'index', 'slug' => null])); exit;
+            return new RedirectResponse($this->url('blog', ['action' => 'index', 'slug' => null]));
+        }
+//        var_dump($data['post']); exit;
 
         return new HtmlResponse($this->template('blog::view', $data));
     }
@@ -45,9 +58,23 @@ class PostFrontendController extends AbstractActionController
 //        var_dump($this->url('blog', ['action' => 'index'])); exit;
         //set path to re redirect
         $url = 'http://' .$_SERVER['HTTP_HOST'] . '/blog';
+        $form = $this->forms('ViewForm');
+        $request = $this->getRequest();
+
         $data = [];
         $userId = $this->authentication()->getIdentity()->getId();
+
         //get data from Post
+//        if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
+//            $data = $this->getRequest()->getParsedBody();
+//
+//            $form->setData($data);
+//            if ($form->isValid()) {
+//                $message = $form->getData();
+//                var_dump($message); exit;
+//            }
+//        }
+
         $createPost = $this->getRequest()->getParsedBody();
         //get data from db
         $dbPost = $this->postService->getPosts();
@@ -61,12 +88,13 @@ class PostFrontendController extends AbstractActionController
 
             foreach ($dbPost as $value) {
                 if ($createPost['slug'] === $value->getSlug()) {
-//                    exit ('slug already exists');
-                    return new RedirectResponse($this->url('blog', ['action' => '']));
+                    $this->messenger()->addError('Slug exist');
+                    return new RedirectResponse($this->url('blog', ['action' => 'create', 'slug' => null]));
                 }
                 $storage->setSlug($createPost['slug']);
             }
             $data['post'] = $this->postService->createPost($storage);
+            $this->messenger()->addSuccess('Post created');
             return new RedirectResponse($url);
         }
         return new HtmlResponse($this->template('blog::create', $data));
@@ -89,6 +117,8 @@ class PostFrontendController extends AbstractActionController
             $storage->setId($data['post']->getId());
 
             $data['post'] = $this->postService->updatePost($data['slug'], $storage);
+            $this->messenger()->addSuccess('Post updated');
+            return new RedirectResponse($this->url('blog', ['action' => 'index', 'slug' => null]));
         }
         return new HtmlResponse($this->template('blog::edit', $data));
     }
@@ -100,7 +130,8 @@ class PostFrontendController extends AbstractActionController
 
         $data = $this->postService->deletePost($data['slug']);
         if ($data) {
-            exit('Succes -> post Deleted');
+            $this->messenger()->addSuccess('Post deleted');
+            return new RedirectResponse($this->url('blog', ['action' => 'index', 'slug' => null]));
         }
         exit('Post was not deleted');
     }

@@ -47,6 +47,12 @@ return [
                                     'actions' => ['create', 'edit', 'delete'],
                                     'permissions' => ['authenticated']
                                 ],
+                                [
+                                    'route' => 'messages',
+                                    'actions' => ['create', 'delete'],
+                                    'permissions' => ['authenticated']
+                                ],
+
                             ]
                         ]
                     ]

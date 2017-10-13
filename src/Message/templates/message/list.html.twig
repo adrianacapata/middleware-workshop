@@ -1,0 +1,31 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}List messages{% endblock %}
+{% block content %}
+    <div class="container">
+        {{ messagesPartial('partial::alerts') }}
+        {% for message in post %}
+
+            <div>
+                <h4>
+            {% for user in users %}
+                    {% if user.id == message.senderId %}
+                   <strong>{{ user.username }}</strong>
+                    {% endif %}
+            {% endfor %}
+                        said at: {{ message.dataSent }} {{ message.content }} </h4>
+            </div>
+        {% endfor %}
+        <form method="post" action="/message/create">
+            <tr>
+                <td> <input type="textarea" name="content"> </td>
+                <td> <input type="submit" value="Send to: " class="btn btn-success"> </td>
+                <select name="receiverId">
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </tr>
+        </form>
+    </div>
+{% endblock %}

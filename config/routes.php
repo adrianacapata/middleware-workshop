@@ -7,6 +7,7 @@ use Frontend\App\Controller\ContactController;
 use Frontend\App\Controller\PageController;
 use Frontend\User\Controller\UserController as FrontendUserController;
 use Apidemia\Blog\Controller\PostFrontendController;
+use Apidemia\Message\Controller\MessageController;
 
 /**
  * Setup routes with a single request method:
@@ -39,7 +40,9 @@ use Apidemia\Blog\Controller\PostFrontendController;
 
 $app->route('/', [\Workshop\Middleware\DbMultilanguageMiddleware::class, PageController::class], ['GET', 'POST'], 'home');
 //Format: /blog/{action}[/{slug}]
-$app->route('/blog[/[{action}[/{slug}]]]', PostFrontendController::class, ['GET', 'POST'], 'blog');
+$app->route('/blog[/[{action}[/[{slug}]]]]', PostFrontendController::class, ['GET', 'POST'], 'blog');
+
+$app->route('/message[/[{action}]]', MessageController::class, ['GET', 'POST'], 'message');
 // following three routes are for user functionality
 $app->route('/user/login', LoginAction::class, ['GET', 'POST'], 'login');
 $app->route('/user/logout', LogoutAction::class, ['GET'], 'logout');

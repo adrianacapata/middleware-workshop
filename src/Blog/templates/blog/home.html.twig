@@ -1,67 +1,45 @@
 {% extends '@layout/default.html.twig' %}
 
-{ % block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 no-padding forms">
-            <h1>Contact Us</h1>
-            <div class="form-content">
+{% block title %}Home{% endblock %}
+{% block content %}
+    <style>
+        .action {
+            width: 200px;
+        }
+        .actionElement {
+            width: 10%;
+        }
+    </style>
+    <h1> Post List</h1>
 
+    <div class="container">
+        {{ messagesPartial('partial::alerts') }}
+        <table class="table" align="center">
+            <thead>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Author</th>
+                <th>Published On</th>
+                <th class = "action" >Action</th>
+            </thead>
+            <tbody>
+                    {%  for item in post %}
+                        <tr>
+                    <td><a href="/blog/view/{{ item.slug }}"> {{ item.title }} </a> </td>
+                    <td> {{ item.content }}</td>
+                    <td> {{ item.userId }}</td>
+                    <td> {{ item.publishDate }}</td>
+                    <td>
+                        <table>
+                            <td class="actionElement"><a href="/blog/edit/{{ item.slug }}">Edit</a></td>
+                            <td class="actionElement"><a href="/blog/delete/{{ item.slug }}"> Delete </a> </td>
+                        </table>
+                    </td>
+                </tr>
+                    {% endfor %}
 
-                { % set dummy = form.prepare() %}
-
-
-                { % include '@partial/form-display.html.twig' with {'form': form, 'showLabels': true} %}
-
-
-
-            </div>
-        </div>
+            </tbody>
+        </table>
+        <a href="/blog/create">Create</a>
     </div>
-</div>
-{ % endblock %}
-{#{% extends '@layout/default.html.twig' %}#}
-
-{#{% block title %}Home{% endblock %}#}
-{#{% block content %}#}
-    {#<style>#}
-        {#.action {#}
-            {#width: 200px;#}
-        {#}#}
-        {#.actionElement {#}
-            {#width: 10%;#}
-        {#}#}
-    {#</style>#}
-    {#<h1> Post List</h1>#}
-
-    {#<div class="container">#}
-        {#<table class="table" align="center">#}
-            {#<thead>#}
-                {#<th>Title</th>#}
-                {#<th>Content</th>#}
-                {#<th>Author</th>#}
-                {#<th>Published On</th>#}
-                {#<th class = "action" >Action</th>#}
-            {#</thead>#}
-            {#<tbody>#}
-                    {#{%  for item in post %}#}
-                        {#{{ dump(post) }}#}
-                        {#<tr>#}
-                    {#<td><a href="/blog/view/{{ item.slug }}"> {{ item.title }} </a> </td>#}
-                    {#<td> {{ item.content }}</td>#}
-                    {#<td> {{ item.userId }}</td>#}
-                    {#<td> {{ item.publishDate }}</td>#}
-                    {#<td>#}
-                        {#<table>#}
-                            {#<td class="actionElement"><a href="/blog/edit/{{ item.slug }}">Edit</a></td>#}
-                            {#<td class="actionElement"><a href="/blog/delete/{{ item.slug }}"> Delete </a> </td>#}
-                        {#</table>#}
-                    {#</td>#}
-                {#</tr>#}
-                    {#{% endfor %}#}
-
-            {#</tbody>#}
-        {#</table>#}
-        {#<a href="/blog/create">Create</a>#}
-    {#</div>#}
-{#{% endblock %}#}
+{% endblock %}

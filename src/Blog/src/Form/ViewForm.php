@@ -9,8 +9,9 @@
 namespace Apidemia\Blog\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class ViewForm extends Form
+class ViewForm extends Form implements InputFilterProviderInterface
 {
     public function __construct($name = 'ViewForm', array $options = [])
     {
@@ -20,12 +21,66 @@ class ViewForm extends Form
     public function init()
     {
         $this->add([
-            'name' => 'title',
+            'name' => 'Title',
             'type' => 'text',
+            'options' => [
+                'label' => 'Title'
+            ],
             'attributes' => [
-                'type' => 'text',
-                'value' => 'sth'
+                'placeholder' => 'Title...'
             ]
         ]);
+
+        $this->add([
+            'name' => 'Content',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Content'
+            ],
+            'attributes' => [
+                'placeholder' => 'Content...'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'Slug',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Slug'
+            ],
+            'attributes' => [
+                'placeholder' => 'Slug...'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'type' => 'submit',
+                'value' => 'Submit'
+            ]
+        ]);
+    }
+
+    public function getInputFilterSpecification()
+    {
+        return [
+            'email' => [
+                'filters' => [
+                    ['name' => 'StringTrim']
+                ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty',
+                        'break_chain_on_failure' => true,
+                        'options' => [
+                            'message' => '<b>Field</b> is required and cannot be empty',
+                        ]
+                    ],
+
+                ],
+            ]
+        ];
     }
 }

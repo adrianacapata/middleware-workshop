@@ -58,8 +58,8 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
         ];
 
         $mapper = $this->getMapperManager()->get(PostEntity::class);
-        $result = $mapper->save($post);
-        return $result;
+        return $result = $mapper->save($post);
+//        return $result;
     }
 
     public function deletePost($slug)

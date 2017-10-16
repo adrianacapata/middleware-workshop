@@ -2,6 +2,10 @@
 
 {% block title %}List messages{% endblock %}
 {% block content %}
+
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
     <div class="container">
         {{ messagesPartial('partial::alerts') }}
         {% for message in post %}
@@ -16,7 +20,7 @@
                         said at: {{ message.dataSent }} {{ message.content }} </h4>
             </div>
         {% endfor %}
-        <form method="post" action="/message/create">
+        <form method="post" action="/message/sendMessage">
             <tr>
                 <td> <input type="textarea" name="content"> </td>
                 <td> <input type="submit" value="Send to: " class="btn btn-success"> </td>
@@ -27,5 +31,34 @@
                 </select>
             </tr>
         </form>
+
+        <div class="message">
+            <textarea id="message" placeholder="Message..."></textarea>
+            <button  class="btn btn-success" onclick="sendMessage()">send to: </button>
+            <select id="receiverId">
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
+
+    <script>
+        function sendMessage() {
+            var siteUrl = "/message/";
+            $.ajax({
+                url: "http://localhost:8080/message/create",
+                type: "POST",
+                dataType: "JSON",
+                data:{message: $('#message').val(), receiverId: $('#receiverId').val()},
+                succes: function(response){
+                    message = response('message');
+                    receiverId = response('receiverId');
+
+                    $("#message").append(html);
+                },
+            });
+        }
+    </script>
 {% endblock %}
+

@@ -26,6 +26,7 @@ class MessageController extends AbstractActionController
     public function indexAction(): ResponseInterface
     {
         $data['post'] = $this->messageService->listMessages();
+//        var_dump($data['post']); exit;
         $data['users'] = $this->messageService->getUsers();
 
 //        $loggedUser = $this->authentication()->getIdentity()->getId();
@@ -42,11 +43,12 @@ class MessageController extends AbstractActionController
 
     public function createAction()
     {
-        $data['users'] = $this->messageService->getUsers();
+        $users = $this->messageService->getUsers();
 
         $senderId = $this->authentication()->getIdentity()->getId();
 
         $createMessage = $this->getRequest()->getParsedBody();
+
         $result = ['succes' => false,'message' => 'An error has ocurred'];
 
         if (!empty($createMessage)) {
@@ -57,9 +59,22 @@ class MessageController extends AbstractActionController
             $storage->setReceiverId($createMessage['receiverId']);
             $storage->setIsSeen();
 
-            $data['post'] = $this->messageService->sendMessage($storage);
+            $newMessage = $this->messageService->sendMessage($storage);
+            $date = $this->messageService->listMessagesById($newMessage->getId());
         }
-        $result = ['succes' => 'true', 'receiverId' => $createMessage['receiverId'], 'message' => $createMessage['message']];
+
+        foreach ($users as $u) {
+            if ($u['id'] == $senderId) {
+                $username = $u['username'];
+                break;
+            }
+        }
+        $result = ['succes' => 'true',
+                    'message' => $createMessage['message'],
+                    'receiverId' => $createMessage['receiverId'],
+                    'username' => $username,
+                    'dataSent' => current($date)->getDataSent()];
+
 
         return new JsonResponse($result);
     }

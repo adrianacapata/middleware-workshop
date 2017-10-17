@@ -19,7 +19,8 @@ class MessageService implements MapperManagerAwareInterface, MessageServiceInter
     public function sendMessage(MessageEntity $message)
     {
         $mapper = $this->getMapperManager()->get(MessageEntity::class);
-        return $result = $mapper->save($message);
+
+        return $mapper->save($message);
     }
 
     public function listMessages()
@@ -53,6 +54,18 @@ class MessageService implements MapperManagerAwareInterface, MessageServiceInter
         $where = [];
 
         $result = $mapper->getQueryResult($table, $where);
+        return $result;
+    }
+
+    public function listMessagesById($id = '')
+    {
+        $mapper = $this->getMapperManager()->get(MessageEntity::class);
+        $options = [
+            'conditions' => [
+                'id' => $id
+            ],
+        ];
+        $result = $mapper->find('all', $options);
         return $result;
     }
 }

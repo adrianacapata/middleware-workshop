@@ -29,10 +29,10 @@ class MessageController extends AbstractActionController
 //        var_dump($data['post']); exit;
         $data['users'] = $this->messageService->getUsers();
 
-//        $loggedUser = $this->authentication()->getIdentity()->getId();
-//        $data['messages'] = $this->messageService->listConversations($loggedUser);
-//        var_dump(end($data['post'])); exit;
-        foreach ($data['post'] as $message) {
+        $loggedUser = $this->authentication()->getIdentity()->getId();
+        $data['messages'] = $this->messageService->listConversations($loggedUser);
+        //var_dump($data['messages']); exit;
+        foreach ($data['messages'] as $message) {
             if ($message->getIsSeen() == 0) {
                 $message->setIsSeen(1);
                 $this->messageService->sendMessage($message);
@@ -69,11 +69,13 @@ class MessageController extends AbstractActionController
                 break;
             }
         }
-        $result = ['succes' => 'true',
-                    'message' => $createMessage['message'],
-                    'receiverId' => $createMessage['receiverId'],
-                    'username' => $username,
-                    'dataSent' => current($date)->getDataSent()];
+        $result = [
+            'succes' => 'true',
+            'message' => $createMessage['message'],
+             'receiverId' => $createMessage['receiverId'],
+             'username' => $username,
+             'dataSent' => current($date)->getDataSent()
+        ];
 
 
         return new JsonResponse($result);

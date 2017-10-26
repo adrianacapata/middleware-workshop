@@ -31,7 +31,7 @@
                     <td> {{ item.publishDate }}</td>
                     <td>
                         <table>
-                            <td class="actionElement"><a href="/blog/edit/{{ item.slug }}">Edit</a></td>
+                            <td class="actionElement"><a href="/blog/editForm/{{ item.slug }}">Edit</a></td>
                             <td class="actionElement"><a href="/blog/delete/{{ item.slug }}"> Delete </a> </td>
                         </table>
                     </td>
@@ -40,6 +40,6 @@
 
             </tbody>
         </table>
-        <a href="/blog/create">Create</a>
+        <a href="/blog/createForm">Create</a>
     </div>
 {% endblock %}

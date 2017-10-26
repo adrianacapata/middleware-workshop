@@ -1,0 +1,34 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Edit{% endblock %}
+{% block content %}
+    <style>
+        .action {
+            width: 200px;
+        }
+        .actionElement {
+            width: 10%;
+        }
+    </style>
+    {#<h1> Edit post {{ item.title }}</h1>#}
+
+    <div class="container">
+            <div class="row">
+
+                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 no-padding forms">
+                    <div class="form-content">
+                        {{ messagesPartial('partial::alerts') }}
+
+                        {% set dummy = form.setAttribute('autocomplete', 'off') %}
+                        {% set dummy = form.prepare() %}
+                        {{ form().openTag(form) | raw }}
+
+                        {% include '@partial/form-display.html.twig' with {'form': form, 'showLabels': true} %}
+
+                        {{ form().closeTag() | raw }}
+                    </div>
+                </div>
+        </table>
+    </div>
+
+{% endblock %}

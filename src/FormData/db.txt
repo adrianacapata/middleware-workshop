@@ -1,0 +1,7 @@
+FormDataEntity
+
+firstName
+lastName
+email
+pet (cat/dog/other) with a dropdown-> cat, dog, other
+date

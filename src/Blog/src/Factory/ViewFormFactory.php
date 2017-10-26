@@ -8,14 +8,14 @@
 
 namespace Apidemia\Blog\Factory;
 
-use Apidemia\Blog\Form\ViewForm;
+use Apidemia\Blog\Form\CreateForm;
 use Psr\Container\ContainerInterface;
 
 class ViewFormFactory
 {
-    public function __invoke()
+    public function __invoke(ContainerInterface $container)
     {
 //        $container = $container->get('config');
-        return new ViewForm();
+        return new CreateForm($container);
     }
 }

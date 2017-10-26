@@ -4,7 +4,7 @@ use Apidemia\Blog\Service\PostServiceInterface;
 use Apidemia\Blog\Service\PostService;
 use Apidemia\Blog\Factory\PostFactory;
 use Apidemia\Blog\Controller\PostFrontendController;
-use Apidemia\Blog\Form\ViewForm;
+use Apidemia\Blog\Form\CreateForm;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [

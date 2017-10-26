@@ -14,10 +14,12 @@
   },
   "require": {
     "php": "^7.1",
+    "doctrine/orm": "^2.5",
     "dotkernel/dot-annotated-services": "^1.1",
     "dotkernel/dot-authentication-service": "^0.2",
     "dotkernel/dot-authentication-web": "^0.2",
     "dotkernel/dot-cache": "^1.1",
+    "dotkernel/dot-console": "^0.1",
     "dotkernel/dot-controller": "^0.3",
     "dotkernel/dot-controller-plugin-authentication": "^0.2",
     "dotkernel/dot-controller-plugin-authorization": "^0.2",
@@ -43,8 +45,6 @@
     "dotkernel/dot-twigrenderer": "^0.2",
     "dotkernel/dot-user": "^0.3",
     "dotkernel/dot-validator": "^1.1",
-    "dotkernel/dot-console": "^0.1",
-
     "roave/security-advisories": "dev-master",
     "zendframework/zend-captcha": "^2.6",
     "zendframework/zend-component-installer": "^1.0 || ^0.7.0",
@@ -76,7 +76,8 @@
       "Frontend\\Console\\": "src/Console/src",
       "Workshop\\Middleware\\": "src/Workshop/src",
       "Apidemia\\Blog\\": "src/Blog/src",
-      "Apidemia\\Message\\": "src/Message/src"
+      "Apidemia\\Message\\": "src/Message/src",
+      "Apidemia\\DataForm": "src/DataDorm/src"
     }
   },
   "autoload-dev": {

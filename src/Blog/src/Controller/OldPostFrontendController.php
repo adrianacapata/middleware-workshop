@@ -55,6 +55,45 @@ class PostFrontendController extends AbstractActionController
     }
 
 
+    public function createAction(): ResponseInterface
+    {
+//        $test = $this->getRequest()->getUri()->getPath();
+//        var_dump($this->url('blog', ['action' => 'index'])); exit;
+        //set path to re redirect
+        $url = 'http://' .$_SERVER['HTTP_HOST'] . '/blog';
+
+        $request = $this->getRequest();
+
+        $data = [];
+        $userId = $this->authentication()->getIdentity()->getId();
+
+
+
+        $createPost = $this->getRequest()->getParsedBody();
+        //get data from db
+        $dbPost = $this->postService->getPosts();
+
+        if (!empty($createPost)) {
+//            var_dump($dbPost); exit;
+            $storage = new PostEntity();
+            $storage->setTitle($createPost['title']);
+            $storage->setContent($createPost['content']);
+            $storage->setUserId($userId);
+
+            foreach ($dbPost as $value) {
+                if ($createPost['slug'] === $value->getSlug()) {
+                    $this->messenger()->addError('Slug exist');
+                    return new RedirectResponse($this->url('blog', ['action' => 'create', 'slug' => null]));
+                }
+                $storage->setSlug($createPost['slug']);
+            }
+            $data['post'] = $this->postService->createPost($storage);
+            $this->messenger()->addSuccess('Post created');
+            return new RedirectResponse($url);
+        }
+        return new HtmlResponse($this->template('blog::create', $data));
+    }
+
     public function createFormAction(): ResponseInterface
     {
         $form = $this->forms('CreateForm');
@@ -91,51 +130,6 @@ class PostFrontendController extends AbstractActionController
             }
         }
         return new HtmlResponse($this->template('blog::create-form', [
-                'form' => $form
-            ]));
-    }
-
-    public function editFormAction(): ResponseInterface
-    {
-        $slug = $this->getRequest()->getAttributes();
-        $data['slug'] = $slug['slug'] ?? 'N\A';
-        $data['post'] = $this->postService->getPosts($data['slug'])[0];
-
-        $form = $this->forms('EditForm');
-        $request = $this->getRequest();
-
-        $userId = $this->authentication()->getIdentity()->getId();
-
-        if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $edit = $request->getParsedBody();
-            $form->setData($edit);
-
-            if ($form->isValid()) {
-                $message = $form->getData();
-                $post = new PostEntity();
-
-                $post->setContent($message['content']);
-                $post->setTitle($message['title']);
-                $post->setSlug($message['slug']);
-                $post->setUserId($userId);
-                $post->setId($message->getId());
-
-                $result = $this->postService->updatePost($data['slug'], $post);
-                if ($result) {
-                    $this->messenger()->addSuccess('Post updated');
-                    return new RedirectResponse($this->url('blog', ['action' => 'index', 'slug' => null]));
-                } else {
-                    $this->messenger()->addError('Error saving post. Please try again');
-                    return new RedirectResponse($request->getUri(), 303);
-                }
-            } else {
-                $this->messenger()->addError($this->forms()->getMessages($form));
-                $this->forms()->saveState($form);
-                return new RedirectResponse($request->getUri(), 303);
-            }
-        }
-
-        return new HtmlResponse($this->template('blog::edit-form', [
             'form' => $form
         ]));
     }

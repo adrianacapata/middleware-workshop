@@ -10,10 +10,10 @@
 namespace Apidemia\Blog;
 
 use Apidemia\Blog\Entity\PostEntity;
-use Apidemia\Blog\Factory\ViewFormFactory;
+use Apidemia\Blog\Form\EditForm;
 use Apidemia\Blog\Form\ViewFieldset;
 use Apidemia\Blog\Mapper\PostMapper;
-use Apidemia\Blog\Form\ViewForm;
+use Apidemia\Blog\Form\CreateForm;
 use Dot\Mapper\Factory\DbMapperFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
@@ -59,11 +59,13 @@ class ConfigProvider
             'form_manager' => [
                 'factories' => [
                    ViewFieldset::class => InvokableFactory::class,
-                   ViewForm::class => ViewFormFactory::class,
+                   CreateForm::class => InvokableFactory::class,
+                   EditForm::class => InvokableFactory::class
                 ],
                 'aliases' => [
                     'ViewFieldset' =>ViewFieldset::class,
-                    'ViewForm' => ViewForm::class,
+                    'CreateForm' => CreateForm::class,
+                    'EditForm' => EditForm::class,
                 ]
             ],
         ];

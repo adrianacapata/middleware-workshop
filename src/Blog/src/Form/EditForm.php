@@ -19,8 +19,9 @@ class EditForm extends Form
 
     public function init()
     {
+
         $this->add([
-            'type' => 'ViewFieldset',
+            'type' => 'EditFieldset',
             'options' => [
                 'use_as_base_fieldset' => true,
             ]
@@ -41,6 +42,5 @@ class EditForm extends Form
                 'slug'
             ]
         ]);
-//        var_dump($this->getValidationGroup());exit;
     }
 }

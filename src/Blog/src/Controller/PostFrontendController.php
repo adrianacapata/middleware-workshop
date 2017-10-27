@@ -97,28 +97,35 @@ class PostFrontendController extends AbstractActionController
 
     public function editFormAction(): ResponseInterface
     {
+
         $slug = $this->getRequest()->getAttributes();
         $data['slug'] = $slug['slug'] ?? 'N\A';
         $data['post'] = $this->postService->getPosts($data['slug'])[0];
-
+//        echo '<pre>';
+//var_dump($data['post']); exit;
         $form = $this->forms('EditForm');
         $request = $this->getRequest();
-
         $userId = $this->authentication()->getIdentity()->getId();
+
+        if ($data['post']->getUserId() != $userId) {
+            $this->messenger()->addError('You don`t have permisions');
+            return new RedirectResponse('/blog');
+        }
 
         if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $edit = $request->getParsedBody();
             $form->setData($edit);
 
             if ($form->isValid()) {
-                $message = $form->getData();
+                $message = $form->getData()['EditForm'];
                 $post = new PostEntity();
 
                 $post->setContent($message['content']);
                 $post->setTitle($message['title']);
                 $post->setSlug($message['slug']);
                 $post->setUserId($userId);
-                $post->setId($message->getId());
+                $post->setId($data['post']->getId());
+
 
                 $result = $this->postService->updatePost($data['slug'], $post);
                 if ($result) {

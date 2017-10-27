@@ -10,13 +10,15 @@ namespace Apidemia\Blog\Form;
 
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Apidemia\Blog\Service\PostService;
 
-class ViewFieldset extends Fieldset implements InputFilterProviderInterface
+class EditFieldset extends Fieldset implements InputFilterProviderInterface
 {
     public function __construct()
     {
-        parent::__construct('CreateForm');
+        parent::__construct('EditForm');
     }
+
     public function init()
     {
         $this->add([
@@ -26,7 +28,7 @@ class ViewFieldset extends Fieldset implements InputFilterProviderInterface
                 'label' => 'Title'
             ],
             'attributes' => [
-                'placeholder' => 'Title...'
+                'placeholder' => 'Title...',
             ]
         ]);
 
@@ -84,26 +86,26 @@ class ViewFieldset extends Fieldset implements InputFilterProviderInterface
             ],
 
             'content' => [
-                    'filters' => [
-                        ['name' => 'StringTrim']
-                    ],
-                    'validators' => [
-                        [
-                            'name' => 'NotEmpty',
-                            'break_chain_on_failure' => true,
-                            'options' => [
-                                'message' => '<b>Content</b> is required and cannot be empty',
-                            ]
-                        ],
-                        [
-                            'name' => 'StringLength',
-                            'options' => [
-                                'min' => 3,
-                            ]
-                        ]
-
-                    ],
+                'filters' => [
+                    ['name' => 'StringTrim']
                 ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty',
+                        'break_chain_on_failure' => true,
+                        'options' => [
+                            'message' => '<b>Content</b> is required and cannot be empty',
+                        ]
+                    ],
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'min' => 3,
+                        ]
+                    ]
+
+                ],
+            ],
 
             'slug' => [
                 'filters' => [

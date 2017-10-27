@@ -12,15 +12,17 @@ use Apidemia\Blog\Entity\PostEntity;
 use Dot\Mapper\Entity\EntityInterface;
 use Dot\Mapper\Mapper\MapperManagerAwareInterface;
 use Dot\Mapper\Mapper\MapperManagerAwareTrait;
+use Zend\Db\Sql\Select;
 
 class PostService implements MapperManagerAwareInterface, PostServiceInterface
 {
     use MapperManagerAwareTrait;
 
+
     public function getPosts($slug = '')
     {
         $options = [
-            'fields' => '*'
+            'fields' => '*',
         ];
 
         if ($slug) {
@@ -31,6 +33,33 @@ class PostService implements MapperManagerAwareInterface, PostServiceInterface
             ];
         }
         $mapper = $this->getMapperManager()->get(PostEntity::class);
+        $result = $mapper->find('all', $options);
+        return $result;
+    }
+
+    public function joingetPosts($slug = '')
+    {
+        $options = [
+            'conditions' => [
+                'post.userId' => 1
+            ],
+            'joins' => [
+                'UserDetails' => [
+                'on' => 'UserDetails.userId = post.userId',
+                'type' => Select::JOIN_LEFT
+                ]
+            ]
+        ];
+
+        if ($slug) {
+            $options += [
+                'conditions' => [
+                    'slug' => $slug
+                ]
+            ];
+        }
+        $mapper = $this->getMapperManager()->get(PostEntity::class);
+
         $result = $mapper->find('all', $options);
         return $result;
     }

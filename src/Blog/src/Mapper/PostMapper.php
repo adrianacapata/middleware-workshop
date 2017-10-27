@@ -10,6 +10,7 @@ namespace Apidemia\Blog\Mapper;
 
 use Dot\Mapper\Mapper\AbstractDbMapper;
 use Dot\Mapper\Mapper\MapperInterface;
+use Zend\Db\Sql\Select;
 
 class PostMapper extends AbstractDbMapper implements MapperInterface
 {

@@ -10,6 +10,7 @@
 namespace Apidemia\Blog;
 
 use Apidemia\Blog\Entity\PostEntity;
+use Apidemia\Blog\Form\EditFieldset;
 use Apidemia\Blog\Form\EditForm;
 use Apidemia\Blog\Form\ViewFieldset;
 use Apidemia\Blog\Mapper\PostMapper;
@@ -59,11 +60,13 @@ class ConfigProvider
             'form_manager' => [
                 'factories' => [
                    ViewFieldset::class => InvokableFactory::class,
+                   EditFieldset::class => InvokableFactory::class,
                    CreateForm::class => InvokableFactory::class,
                    EditForm::class => InvokableFactory::class
                 ],
                 'aliases' => [
-                    'ViewFieldset' =>ViewFieldset::class,
+                    'ViewFieldset' => ViewFieldset::class,
+                    'EditFieldset' => EditFieldset::class,
                     'CreateForm' => CreateForm::class,
                     'EditForm' => EditForm::class,
                 ]

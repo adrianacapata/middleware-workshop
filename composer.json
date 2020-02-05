@@ -45,6 +45,7 @@
     "dotkernel/dot-twigrenderer": "^0.2",
     "dotkernel/dot-user": "^0.3",
     "dotkernel/dot-validator": "^1.1",
+    "http-interop/http-middleware": "^0.5.0",
     "roave/security-advisories": "dev-master",
     "zendframework/zend-captcha": "^2.6",
     "zendframework/zend-component-installer": "^1.0 || ^0.7.0",
@@ -77,7 +78,7 @@
       "Workshop\\Middleware\\": "src/Workshop/src",
       "Apidemia\\Blog\\": "src/Blog/src",
       "Apidemia\\Message\\": "src/Message/src",
-      "Apidemia\\DataForm": "src/DataDorm/src"
+      "Apidemia\\DataForm\\": "src/DataDorm/src"
     }
   },
   "autoload-dev": {
